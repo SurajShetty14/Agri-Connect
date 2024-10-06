@@ -2,8 +2,9 @@ const express = require("express");
 const Product = require("../models/Product");
 const upload = require("../config/multer");
 const router = express.Router();
+const authMiddleware = require("../middlewares/authMiddleware");
 
-router.post("/", upload.single("image"), async (req, res) => {
+router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
   const { name, price, description, quantity, farmerId } = req.body;
 
   if (!req.file) {
