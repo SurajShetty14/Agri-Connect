@@ -59,31 +59,73 @@ const MarketPlace = () => {
   };
 
   return (
-    <div>
-      <h2>Marketplace</h2>
-      {role === "farmer" && <Link to='/products/add'>Add Product</Link>}
-      <ul>
-        {products.length > 0 ? (
-          products.map((product) => (
-            <li key={product._id}>
-              <Link to={`/products/${product._id}`}>{product.name}</Link>
+    <div className='min-h-screen bg-gray-100'>
+      {/* Navbar */}
+      <nav className='bg-green-600 p-4 shadow-md'>
+        <div className='container mx-auto flex justify-between items-center'>
+          <Link to='/' className='text-white text-lg font-semibold'>
+            AgriConnect
+          </Link>
+          <div>
+            <Link to='/' className='text-white px-4'>
+              Home
+            </Link>
+            {role === "farmer" && (
+              <Link to='/products/add' className='text-white px-4'>
+                Add Product
+              </Link>
+            )}
+          </div>
+        </div>
+      </nav>
 
-              <img
-                src={`http://localhost:5000/${product.imageUrl}`}
-                alt={product.name}
-                style={{ width: "100px", height: "100px" }}
-              />
-              {isAuthenticated && (
-                <button onClick={() => handleDelete(product._id)}>
-                  Delete
-                </button>
-              )}
-            </li>
-          ))
-        ) : (
-          <li>No products available.</li>
-        )}
-      </ul>
+      {/* Marketplace Title */}
+      <div className='container mx-auto py-6'>
+        <h2 className='text-3xl font-bold text-center text-green-600 mb-6'>
+          Marketplace
+        </h2>
+
+        {/* Product List */}
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+          {products.length > 0 ? (
+            products.map((product) => (
+              <div
+                key={product._id}
+                className='bg-white shadow-md rounded-lg overflow-hidden'>
+                <Link to={`/products/${product._id}`}>
+                  <img
+                    src={`http://localhost:5000/${product.imageUrl}`}
+                    alt={product.name}
+                    className='w-full h-48 object-cover'
+                  />
+                  <div className='p-4'>
+                    <h3 className='text-lg font-semibold text-gray-800'>
+                      {product.name}
+                    </h3>
+                    <p className='text-gray-600'>Price: ₹{product.price}</p>
+                    <p className='text-gray-600'>
+                      Quantity: {product.quantity} Kg
+                    </p>
+                  </div>
+                </Link>
+                {isAuthenticated && (
+                  <div className='flex justify-center mb-4'>
+                    <Link
+                      to={`/products/${product._id}`}
+                      className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none'>
+                      View
+                    </Link>
+                  </div>
+                )}
+              </div>
+            ))
+          ) : (
+            <div className='col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 text-center text-gray-500'>
+              No products available.
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
