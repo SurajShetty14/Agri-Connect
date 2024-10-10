@@ -1,10 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-// Function to decode JWT token without external libraries
 const decodeToken = (token) => {
-  const base64Url = token.split(".")[1]; // Get payload part of the JWT
+  const base64Url = token.split(".")[1];
   const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
   const jsonPayload = decodeURIComponent(
     atob(base64)
@@ -125,6 +124,8 @@ const ProductForm = ({ isEdit }) => {
       />
       <input type='file' onChange={(e) => setImage(e.target.files[0])} />
       <button type='submit'>{isEdit ? "Update Product" : "Add Product"}</button>
+      <br />
+      <Link to={"/farmerDashboard"}>Back</Link>
     </form>
   );
 };

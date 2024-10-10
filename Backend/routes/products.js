@@ -4,7 +4,6 @@ const upload = require("../config/multer");
 const router = express.Router();
 const authMiddleware = require("../middlewares/authMiddleware");
 
-// Create a new product
 router.post(
   "/",
   authMiddleware(["farmer"]),

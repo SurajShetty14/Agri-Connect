@@ -85,10 +85,16 @@ const FarmerDashboard = () => {
 const handleDelete = async (productId) => {
   if (window.confirm("Are you sure you want to delete this product?")) {
     try {
-      await axios.delete(`http://localhost:5000/api/products/${productId}`);
+      const token = localStorage.getItem("token");
+      await axios.delete(`http://localhost:5000/api/products/${productId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       window.location.reload();
     } catch (error) {
       console.error("Error deleting product:", error);
+      alert("Failed to delete product. Make sure you are authorized.");
     }
   }
 };

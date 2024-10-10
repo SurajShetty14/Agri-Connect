@@ -26,9 +26,9 @@ const ProductDetails = () => {
         src={`http://localhost:5000/${product.imageUrl}`}
         alt={product.name}
       />
-      <p>Price: ${product.price}</p>
+      <p>Price: Rs.{product.price}</p>
       <p>Description: {product.description}</p>
-      <p>Quantity: {product.quantity}</p>
+      <p>Quantity: {product.quantity}Kg</p>
     </div>
   );
 };
