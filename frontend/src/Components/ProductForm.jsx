@@ -1,5 +1,5 @@
-// src/components/ProductForm.js
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -37,16 +37,28 @@ const ProductForm = ({ isEdit }) => {
     if (image) {
       formData.append("image", image);
     }
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decodedToken = jwt_decode(token);
+      const farmerId = decodedToken.farmerId;
 
+      formData.append("farmerId", farmerId);
+    }
     try {
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
       if (isEdit) {
-        await axios.put(`http://localhost:5000/api/products/${id}`, formData);
+        await axios.put(`http://localhost:5000/api/products/${id}`, formData, {
+          headers,
+        });
         alert("Product updated successfully!");
       } else {
-        await axios.post("http://localhost:5000/api/products", formData);
+        await axios.post("http://localhost:5000/api/products", formData, {
+          headers,
+        });
         alert("Product created successfully!");
       }
-      // Reset form after submission
       setName("");
       setPrice("");
       setDescription("");

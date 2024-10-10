@@ -1,8 +1,8 @@
 import React from "react";
 import { CiSearch } from "react-icons/ci";
 import { PiShoppingCartThin } from "react-icons/pi";
+import { Link } from "react-router-dom";
 import logo from "../../assets/Agri-Connect.png";
-import { NavbarMenu } from "../../mockData/data";
 
 const Logo = () => {
   return <img src={logo} alt='Agri Connect Logo' className='h-7 w-auto' />;
@@ -21,7 +21,7 @@ const Navbar = () => {
           </div>
 
           {/* Menu Section */}
-          <div className='hidden md:block'>
+          {/* <div className='hidden md:block'>
             <ul className='flex items-center gap-6 text-gray-600'>
               {NavbarMenu.map((item) => {
                 return (
@@ -36,7 +36,7 @@ const Navbar = () => {
                 );
               })}
             </ul>
-          </div>
+          </div> */}
 
           {/* Item Section */}
           <div className='flex items-center gap-4'>
@@ -46,9 +46,11 @@ const Navbar = () => {
             <button className='text-2xl hover:bg-primary hover:text-white rounded-full p-2 duration-200'>
               <PiShoppingCartThin />
             </button>
-            <button className='hover:bg-primary text-primary font-semibold hover:text-white rounded-md border-2 border-primary px-6 py-2 duration-200 hidden md:block'>
-              Login
-            </button>
+            <Link
+              to={"/register"}
+              className='hover:bg-primary text-primary font-semibold hover:text-white rounded-md border-2 border-primary px-6 py-2 duration-200 hidden md:block'>
+              Register
+            </Link>
           </div>
         </div>
       </nav>

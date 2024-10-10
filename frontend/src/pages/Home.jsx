@@ -4,8 +4,6 @@ import Equipments from "../Components/Equipments/Equipments";
 import Footer from "../Components/Footer/Footer";
 import Hero from "../Components/Hero/Hero";
 import Navbar from "../Components/Navbar/Navbar";
-import TabComp from "../Components/Tab/TabComp";
-
 const Home = () => {
   const bgStyle = {
     backgroundImage: `url(${BgImage})`,
@@ -21,7 +19,6 @@ const Home = () => {
         <Hero />
       </div>
       <Equipments />
-      <TabComp />
       <Footer />
     </div>
   );

@@ -21,9 +21,10 @@ const LoginPage = () => {
         "http://localhost:5000/api/auth/login",
         formData
       );
-      localStorage.setItem("token", response.data.token);
+      const token = response.data.token;
+      localStorage.setItem("token", token);
       setError("");
-      navigate("/");
+      navigate("/marketplace");
     } catch (err) {
       setError("Invalid credentials");
     }
@@ -48,6 +49,9 @@ const LoginPage = () => {
           onChange={handleChange}
         />
         <button type='submit'>Login</button>
+        <p>
+          Not Registerd? <a href='/register'> Register Now</a>
+        </p>
       </form>
       {error && <p>{error}</p>}
     </div>
