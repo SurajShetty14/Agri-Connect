@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../Api";
-const Login = () => {
+
+const LoginPage = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -16,7 +17,10 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await API.post("/auth/login", formData);
+      const response = await API.post(
+        "http://localhost:5000/api/auth/login",
+        formData
+      );
       localStorage.setItem("token", response.data.token);
       setError("");
       navigate("/");
@@ -50,4 +54,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

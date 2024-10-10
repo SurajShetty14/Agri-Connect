@@ -1,36 +1,64 @@
+// src/components/Marketplace.js
+import axios from "axios";
 import React, { useEffect, useState } from "react";
-import API from "../Api";
+import { Link } from "react-router-dom";
 
 const MarketPlace = () => {
   const [products, setProducts] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await API.get("/products");
-        setProducts(response.data);
-      } catch (error) {
-        console.error("Error fetching products", error);
+    const checkAuth = () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        setIsAuthenticated(true);
       }
     };
+    checkAuth();
 
+    const fetchProducts = async () => {
+      const response = await axios.get("/api/products");
+      setProducts(response.data);
+    };
     fetchProducts();
   }, []);
 
+  const handleDelete = async (id) => {
+    if (!isAuthenticated) {
+      alert("You must be logged in to delete a product.");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      await axios.delete(`/api/products/${id}`, config);
+      alert("Product deleted successfully!");
+      setProducts(products.filter((product) => product._id !== id));
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      alert("Error deleting product!");
+    }
+  };
+
   return (
     <div>
-      <h1>Marketplace</h1>
-      {products.length > 0 ? (
-        <ul>
-          {products.map((product) => (
-            <li key={product._id}>
-              {product.name} - {product.price} - {product.description}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No products available</p>
-      )}
+      <h2>Marketplace</h2>
+      {isAuthenticated && <Link to='/products/add'>Add Product</Link>}
+      <ul>
+        {products.map((product) => (
+          <li key={product._id}>
+            <Link to={`/products/${product._id}`}>{product.name}</Link>
+            {isAuthenticated && (
+              <button onClick={() => handleDelete(product._id)}>Delete</button>
+            )}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
