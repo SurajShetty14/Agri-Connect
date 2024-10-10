@@ -1,4 +1,3 @@
-// src/components/Marketplace.js
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -18,13 +17,13 @@ const MarketPlace = () => {
 
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("/api/products");
+        const response = await axios.get("http://localhost:5000/api/products");
 
         if (Array.isArray(response.data)) {
           setProducts(response.data);
         } else {
           console.error("Expected an array, but got:", response.data);
-          setProducts([]); // Set to an empty array if not an array
+          setProducts([]);
         }
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -46,7 +45,7 @@ const MarketPlace = () => {
           Authorization: `Bearer ${token}`,
         },
       };
-      await axios.delete(`/api/products/${id}`, config);
+      await axios.delete(`http://localhost:5000/api/products/${id}`, config);
       alert("Product deleted successfully!");
       setProducts(products.filter((product) => product._id !== id));
     } catch (error) {
@@ -64,6 +63,12 @@ const MarketPlace = () => {
           products.map((product) => (
             <li key={product._id}>
               <Link to={`/products/${product._id}`}>{product.name}</Link>
+
+              <img
+                src={`http://localhost:5000/${product.imageUrl}`}
+                alt={product.name}
+                style={{ width: "100px", height: "100px" }}
+              />
               {isAuthenticated && (
                 <button onClick={() => handleDelete(product._id)}>
                   Delete

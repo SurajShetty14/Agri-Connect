@@ -9,7 +9,9 @@ const ProductDetails = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const response = await axios.get(`/api/products/${id}`);
+      const response = await axios.get(
+        `http://localhost:5000/api/products/${id}`
+      );
       setProduct(response.data);
     };
     fetchProduct();
@@ -20,7 +22,10 @@ const ProductDetails = () => {
   return (
     <div>
       <h2>{product.name}</h2>
-      <img src={product.imageUrl} alt={product.name} />
+      <img
+        src={`http://localhost:5000/${product.imageUrl}`}
+        alt={product.name}
+      />
       <p>Price: ${product.price}</p>
       <p>Description: {product.description}</p>
       <p>Quantity: {product.quantity}</p>

@@ -1,7 +1,19 @@
 import axios from "axios";
-import jwt_decode from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
+// Function to decode JWT token without external libraries
+const decodeToken = (token) => {
+  const base64Url = token.split(".")[1]; // Get payload part of the JWT
+  const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  const jsonPayload = decodeURIComponent(
+    atob(base64)
+      .split("")
+      .map((char) => "%" + ("00" + char.charCodeAt(0).toString(16)).slice(-2))
+      .join("")
+  );
+  return JSON.parse(jsonPayload);
+};
 
 const ProductForm = ({ isEdit }) => {
   const { id } = useParams();
@@ -37,36 +49,47 @@ const ProductForm = ({ isEdit }) => {
     if (image) {
       formData.append("image", image);
     }
+
     const token = localStorage.getItem("token");
     if (token) {
-      const decodedToken = jwt_decode(token);
-      const farmerId = decodedToken.farmerId;
+      try {
+        const decodedToken = decodeToken(token);
+        const farmerId = decodedToken.farmerId;
 
-      formData.append("farmerId", farmerId);
-    }
-    try {
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      if (isEdit) {
-        await axios.put(`http://localhost:5000/api/products/${id}`, formData, {
-          headers,
-        });
-        alert("Product updated successfully!");
-      } else {
-        await axios.post("http://localhost:5000/api/products", formData, {
-          headers,
-        });
-        alert("Product created successfully!");
+        formData.append("farmerId", farmerId);
+
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+
+        if (isEdit) {
+          await axios.put(
+            `http://localhost:5000/api/products/${id}`,
+            formData,
+            {
+              headers,
+            }
+          );
+          alert("Product updated successfully!");
+        } else {
+          await axios.post("http://localhost:5000/api/products", formData, {
+            headers,
+          });
+          alert("Product created successfully!");
+        }
+
+        // Clear the form
+        setName("");
+        setPrice("");
+        setDescription("");
+        setQuantity("");
+        setImage(null);
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        alert("Error saving product!");
       }
-      setName("");
-      setPrice("");
-      setDescription("");
-      setQuantity("");
-      setImage(null);
-    } catch (error) {
-      console.error("Error saving product:", error);
-      alert("Error saving product!");
+    } else {
+      alert("You need to be logged in to create or edit a product.");
     }
   };
 

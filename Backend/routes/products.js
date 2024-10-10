@@ -11,7 +11,7 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
     return res.status(400).json({ message: "Image is required." });
   }
 
-  const imageUrl = req.file.path;
+  const imageUrl = req.file.path.replace(/\\/g, "/");
 
   try {
     const product = new Product({
