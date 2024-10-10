@@ -1,12 +1,13 @@
 import axios from "axios";
 import React, { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("consumer");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -19,16 +20,22 @@ const Register = () => {
         {
           username: trimmedUsername,
           password: trimmedPassword,
+          role,
         }
       );
 
       setSuccess("User registered successfully!");
       setError("");
+      navigate("/login");
       console.log("Response:", response.data);
     } catch (err) {
       setError(err.response?.data?.message || "An error occurred");
       setSuccess("");
     }
+  };
+
+  const handleRoleChange = (e) => {
+    setRole(e.target.value);
   };
 
   return (
@@ -57,9 +64,16 @@ const Register = () => {
             required
           />
         </div>
+        <div>
+          <label>Role: </label>
+          <select name='role' value={role} onChange={handleRoleChange}>
+            <option value='consumer'>Consumer</option>
+            <option value='farmer'>Farmer</option>
+          </select>
+        </div>
         <button type='submit'>Register</button>
         <p>
-          Already Registerd? <a href='/login'> Login Now</a>
+          Already Registered? <a href='/login'> Login Now</a>
         </p>
       </form>
     </div>

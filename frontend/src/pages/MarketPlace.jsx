@@ -5,10 +5,14 @@ import { Link } from "react-router-dom";
 const MarketPlace = () => {
   const [products, setProducts] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+  const [role, setRole] = useState(null);
   useEffect(() => {
     const checkAuth = () => {
       const token = localStorage.getItem("token");
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (user) {
+        setRole(user.role);
+      }
       if (token) {
         setIsAuthenticated(true);
       }
@@ -57,7 +61,7 @@ const MarketPlace = () => {
   return (
     <div>
       <h2>Marketplace</h2>
-      {isAuthenticated && <Link to='/products/add'>Add Product</Link>}
+      {role === "farmer" && <Link to='/products/add'>Add Product</Link>}
       <ul>
         {products.length > 0 ? (
           products.map((product) => (

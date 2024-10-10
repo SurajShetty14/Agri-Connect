@@ -4,36 +4,42 @@ const upload = require("../config/multer");
 const router = express.Router();
 const authMiddleware = require("../middlewares/authMiddleware");
 
-router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
-  const { name, price, description, quantity, farmerId } = req.body;
+// Create a new product
+router.post(
+  "/",
+  authMiddleware(["farmer"]),
+  upload.single("image"),
+  async (req, res) => {
+    const { name, price, description, quantity, farmerId } = req.body;
 
-  if (!req.file) {
-    return res.status(400).json({ message: "Image is required." });
+    if (!req.file) {
+      return res.status(400).json({ message: "Image is required." });
+    }
+
+    const imageUrl = req.file.path.replace(/\\/g, "/");
+
+    try {
+      const product = new Product({
+        name,
+        price,
+        description,
+        quantity,
+        imageUrl,
+        farmerId,
+      });
+
+      await product.save();
+
+      res.status(201).json({
+        message: "Product created successfully",
+        product,
+      });
+    } catch (err) {
+      console.error("Error creating product:", err);
+      res.status(500).json({ message: "Error saving product." });
+    }
   }
-
-  const imageUrl = req.file.path.replace(/\\/g, "/");
-
-  try {
-    const product = new Product({
-      name,
-      price,
-      description,
-      quantity,
-      imageUrl,
-      farmerId,
-    });
-
-    await product.save();
-
-    res.status(201).json({
-      message: "Product created successfully",
-      product,
-    });
-  } catch (err) {
-    console.error("Error creating product:", err);
-    res.status(500).json({ message: err.message });
-  }
-});
+);
 
 // Get all products
 router.get("/", async (req, res) => {
@@ -42,11 +48,11 @@ router.get("/", async (req, res) => {
     res.json(products);
   } catch (error) {
     console.error("Error fetching products:", error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Error fetching products." });
   }
 });
 
-// Get a single product by ID
+// Get a product by ID
 router.get("/:id", async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -56,38 +62,47 @@ router.get("/:id", async (req, res) => {
     res.json(product);
   } catch (error) {
     console.error("Error fetching product:", error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Error fetching product." });
   }
 });
 
 // Update a product by ID
-router.put("/:id", authMiddleware, upload.single("image"), async (req, res) => {
-  const { name, price, description, quantity } = req.body;
-  const updateData = { name, price, description, quantity };
+router.put(
+  "/:id",
+  authMiddleware(["farmer"]),
+  upload.single("image"),
+  async (req, res) => {
+    const { name, price, description, quantity } = req.body;
+    const updateData = { name, price, description, quantity };
 
-  if (req.file) {
-    updateData.imageUrl = req.file.path; // Update the image URL if a new image is provided
-  }
-
-  try {
-    const product = await Product.findByIdAndUpdate(req.params.id, updateData, {
-      new: true,
-    });
-    if (!product) {
-      return res.status(404).json({ message: "Product not found." });
+    if (req.file) {
+      updateData.imageUrl = req.file.path.replace(/\\/g, "/");
     }
-    res.json({
-      message: "Product updated successfully",
-      product,
-    });
-  } catch (error) {
-    console.error("Error updating product:", error);
-    res.status(500).json({ message: error.message });
+
+    try {
+      const product = await Product.findByIdAndUpdate(
+        req.params.id,
+        updateData,
+        {
+          new: true,
+        }
+      );
+      if (!product) {
+        return res.status(404).json({ message: "Product not found." });
+      }
+      res.json({
+        message: "Product updated successfully",
+        product,
+      });
+    } catch (error) {
+      console.error("Error updating product:", error);
+      res.status(500).json({ message: "Error updating product." });
+    }
   }
-});
+);
 
 // Delete a product by ID
-router.delete("/:id", authMiddleware, async (req, res) => {
+router.delete("/:id", authMiddleware(["farmer"]), async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
     if (!product) {
@@ -96,11 +111,11 @@ router.delete("/:id", authMiddleware, async (req, res) => {
     res.json({ message: "Product deleted successfully." });
   } catch (error) {
     console.error("Error deleting product:", error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Error deleting product." });
   }
 });
 
-// Filter products based on query parameters (e.g., price range, availability)
+// Filter products
 router.get("/filter", async (req, res) => {
   const { minPrice, maxPrice, available } = req.query;
   const filters = {};
@@ -120,7 +135,7 @@ router.get("/filter", async (req, res) => {
     res.json(products);
   } catch (error) {
     console.error("Error filtering products:", error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Error filtering products." });
   }
 });
 

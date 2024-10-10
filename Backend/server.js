@@ -3,7 +3,7 @@ const connectDB = require("./config/db");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const authRoutes = require("./routes/auth");
-const productRoutes = require("./routes/products"); // Make sure you import the product routes
+const productRoutes = require("./routes/products");
 dotenv.config();
 
 const app = express();
@@ -18,10 +18,9 @@ app.use(express.json());
 
 // Routes
 app.use("/uploads", express.static("uploads"));
-app.use("/api/products", productRoutes);
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/products", require("./routes/products"));
 
-// Default route for the root
 app.get("/", (req, res) => {
   res.send("Welcome to the API!");
 });

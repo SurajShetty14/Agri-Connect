@@ -21,10 +21,17 @@ const LoginPage = () => {
         "http://localhost:5000/api/auth/login",
         formData
       );
-      const token = response.data.token;
+      const { token, role } = response.data;
+
       localStorage.setItem("token", token);
+      localStorage.setItem("role", role);
+
       setError("");
-      navigate("/marketplace");
+      if (role === "farmer") {
+        navigate("/farmerDashboard");
+      } else {
+        navigate("/marketplace");
+      }
     } catch (err) {
       setError("Invalid credentials");
     }
@@ -50,7 +57,7 @@ const LoginPage = () => {
         />
         <button type='submit'>Login</button>
         <p>
-          Not Registerd? <a href='/register'> Register Now</a>
+          Not Registered? <a href='/register'> Register Now</a>
         </p>
       </form>
       {error && <p>{error}</p>}
