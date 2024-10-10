@@ -14,7 +14,9 @@ const ProductForm = ({ isEdit }) => {
   useEffect(() => {
     if (isEdit && id) {
       const fetchProduct = async () => {
-        const response = await axios.get(`/api/products/${id}`);
+        const response = await axios.get(
+          `http://localhost:5000/api/products/${id}`
+        );
         const product = response.data;
         setName(product.name);
         setPrice(product.price);
@@ -38,10 +40,10 @@ const ProductForm = ({ isEdit }) => {
 
     try {
       if (isEdit) {
-        await axios.put(`/api/products/${id}`, formData);
+        await axios.put(`http://localhost:5000/api/products/${id}`, formData);
         alert("Product updated successfully!");
       } else {
-        await axios.post("/api/products", formData);
+        await axios.post("http://localhost:5000/api/products", formData);
         alert("Product created successfully!");
       }
       // Reset form after submission
