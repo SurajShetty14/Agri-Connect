@@ -1,31 +1,17 @@
-import Navbar from "./Components/Navbar/Navbar"
-import Hero from "./Components/Hero/Hero"
-import Equipments from "./Components/Equipments/Equipments"
-import TabComp from "./Components/Tab/TabComp"
-import Footer from "./Components/Footer/Footer"
-import BgImage from "./assets/bg.png"
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/LoginPage";
+import MarketPlace from "./pages/MarketPlace";
 
-const bgStyle = {
-  backgroundImage: `url(${BgImage})`,
-  backgroundRepeat: "no-repeat",
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  backgroundAttachment: "fixed",
+const App = () => {
+  return (
+    <Routes>
+      <Route path='/' element={<Home />} />
+      <Route path='/marketplace' component={<MarketPlace />} />
+      <Route path='/login' component={<Login />} />
+    </Routes>
+  );
 };
 
-function App() {
-  
-  return (
-    <div className="overflow-x-hidden">
-      <div style={bgStyle}>
-        <Navbar/>
-        <Hero/>
-      </div>
-        <Equipments/>
-        <TabComp/>
-        <Footer/>
-    </div>
-  )
-}
-
-export default App
+export default App;
