@@ -42,7 +42,6 @@ const LoginPage = () => {
 
   return (
     <div className='overflow-hidden'>
-      {error && <p className='text-red-500 text-center'>{error}</p>}
       {success && <p className='text-green-500 text-center'>{success}</p>}
       <div className='min-h-screen bg-gray-100 text-gray-900 flex justify-center'>
         <div className='max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1'>
@@ -104,6 +103,9 @@ const LoginPage = () => {
                         Home
                       </a>
                     </div>
+                    {error && (
+                      <p className=' text-red-500 text-center'>{error}</p>
+                    )}
                   </div>
                 </form>
               </div>

@@ -55,7 +55,6 @@ const FarmerDashboard = () => {
         </div>
         <div className='flex flex-col flex-1 overflow-y-auto'>
           <nav className='flex-1 px-4 py-6 space-y-4'>
-            {/* Sidebar Links */}
             <a
               href='#'
               className='flex items-center px-4 py-2 text-gray-100 hover:bg-green-700 rounded-md transition duration-300 ease-in-out transform hover:scale-105'>
