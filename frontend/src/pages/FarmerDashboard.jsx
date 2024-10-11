@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import API from "../Api";
 
 const FarmerDashboard = () => {
   const [products, setProducts] = useState([]);
@@ -14,7 +15,7 @@ const FarmerDashboard = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/products");
+        const response = await API.get("/products");
         setProducts(response.data);
         setLoading(false);
       } catch (error) {
@@ -69,7 +70,7 @@ const FarmerDashboard = () => {
               <span className='text-lg font-semibold'>Farmers</span>
             </a>
             <a
-              href='#'
+              href='/'
               className='flex items-center px-4 py-2 text-gray-100 hover:bg-green-700 rounded-md transition duration-300 ease-in-out transform hover:scale-105'>
               <svg
                 className='h-6 w-6 mr-3'
