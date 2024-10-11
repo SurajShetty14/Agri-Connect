@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import API from "../Api";
@@ -229,7 +228,7 @@ const handleDelete = async (productId) => {
   if (window.confirm("Are you sure you want to delete this product?")) {
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5000/api/products/${productId}`, {
+      await API.delete(`/products/${productId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

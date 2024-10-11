@@ -1,7 +1,6 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import API from "../Api";
 const MarketPlace = () => {
   const [products, setProducts] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -21,7 +20,7 @@ const MarketPlace = () => {
 
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/products");
+        const response = await API.get("/products");
 
         if (Array.isArray(response.data)) {
           setProducts(response.data);
@@ -49,7 +48,7 @@ const MarketPlace = () => {
           Authorization: `Bearer ${token}`,
         },
       };
-      await axios.delete(`http://localhost:5000/api/products/${id}`, config);
+      await API.delete(`/products/${id}`, config);
       alert("Product deleted successfully!");
       setProducts(products.filter((product) => product._id !== id));
     } catch (error) {
@@ -94,7 +93,7 @@ const MarketPlace = () => {
                 className='bg-white shadow-md rounded-lg overflow-hidden'>
                 <Link to={`/products/${product._id}`}>
                   <img
-                    src={`http://localhost:5000/${product.imageUrl}`}
+                    src={`${process.env.REACT_APP_API_URL}/${product.imageUrl}`}
                     alt={product.name}
                     className='w-full h-48 object-cover'
                   />

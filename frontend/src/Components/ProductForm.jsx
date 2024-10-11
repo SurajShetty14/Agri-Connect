@@ -1,7 +1,5 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-
 const decodeToken = (token) => {
   const base64Url = token.split(".")[1];
   const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -25,9 +23,8 @@ const ProductForm = ({ isEdit }) => {
   useEffect(() => {
     if (isEdit && id) {
       const fetchProduct = async () => {
-        const response = await axios.get(
-          `http://localhost:5000/api/products/${id}`
-        );
+        const response = await API.get(`/products/${id}`);
+
         const product = response.data;
         setName(product.name);
         setPrice(product.price);
@@ -62,16 +59,12 @@ const ProductForm = ({ isEdit }) => {
         };
 
         if (isEdit) {
-          await axios.put(
-            `http://localhost:5000/api/products/${id}`,
-            formData,
-            {
-              headers,
-            }
-          );
+          await API.put(`/products/${id}`, formData, {
+            headers,
+          });
           alert("Product updated successfully!");
         } else {
-          await axios.post("http://localhost:5000/api/products", formData, {
+          await API.post("/products", formData, {
             headers,
           });
           alert("Product created successfully!");

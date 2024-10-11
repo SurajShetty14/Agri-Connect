@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../Api";
 import backgroundImage from "../assets/new1.jpg";
+
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     username: "",
@@ -18,10 +19,7 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await API.post(
-        "http://localhost:5000/api/auth/login",
-        formData
-      );
+      const response = await API.post("/auth/login", formData);
       const { token, role } = response.data;
 
       localStorage.setItem("token", token);

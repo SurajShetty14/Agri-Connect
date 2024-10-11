@@ -9,11 +9,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Connect to the database
 connectDB();
-
-// Middleware
-
 app.use(
   cors({
     origin: "https://agri-connect-ym23.vercel.app/",
@@ -32,18 +28,15 @@ app.get("/", (req, res) => {
   res.send("Welcome to the API!");
 });
 
-// Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack); // Log the error stack
-  res.status(500).send("Something broke!"); // Respond with a 500 error
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
 });
 
-// 404 handler for unknown routes
 app.use((req, res) => {
   res.status(404).send("404 Not Found");
 });
 
-// Start the server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

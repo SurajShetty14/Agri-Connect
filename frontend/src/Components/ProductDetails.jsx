@@ -1,17 +1,14 @@
-// src/components/ProductDetails.js
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-
+import API from "../Api";
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
 
+  const baseURL = process.env.REACT_APP_API_URL;
   useEffect(() => {
     const fetchProduct = async () => {
-      const response = await axios.get(
-        `http://localhost:5000/api/products/${id}`
-      );
+      const response = await API.get(`/products/${id}`);
       setProduct(response.data);
     };
     fetchProduct();
@@ -25,7 +22,7 @@ const ProductDetails = () => {
         {product.name}
       </h2>
       <img
-        src={`http://localhost:5000/${product.imageUrl}`}
+        src={`${baseURL}/${product.imageUrl}`}
         alt={product.name}
         className='w-full h-72 object-cover rounded-md mb-4'
       />
