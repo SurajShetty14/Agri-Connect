@@ -19,19 +19,19 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await API.post("/auth/login", formData);
+      const response = await API.post("/api/auth/login", formData);
       const { token, role } = response.data;
-
       localStorage.setItem("token", token);
-      localStorage.setem("role", role);
-
+      console.log("role", role);
       setError("");
       if (role === "farmer") {
         setSuccess("User Login Successful!");
         navigate("/farmerDashboard");
+        console.log("Farmer ENtered");
       } else {
         setSuccess("User Login Successful!");
         navigate("/marketplace");
+        console.log("Cons ent");
       }
     } catch (err) {
       setError("Invalid credentials");

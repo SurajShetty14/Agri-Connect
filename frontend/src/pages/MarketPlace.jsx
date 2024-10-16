@@ -20,7 +20,7 @@ const MarketPlace = () => {
 
     const fetchProducts = async () => {
       try {
-        const response = await API.get("/products");
+        const response = await API.get("/api/products");
 
         if (Array.isArray(response.data)) {
           setProducts(response.data);
@@ -48,7 +48,7 @@ const MarketPlace = () => {
           Authorization: `Bearer ${token}`,
         },
       };
-      await API.delete(`/products/${id}`, config);
+      await API.delete(`/api/products/${id}`, config);
       alert("Product deleted successfully!");
       setProducts(products.filter((product) => product._id !== id));
     } catch (error) {
@@ -70,7 +70,7 @@ const MarketPlace = () => {
               Home
             </Link>
             {role === "farmer" && (
-              <Link to='/products/add' className='text-white px-4'>
+              <Link to='/api/products/add' className='text-white px-4'>
                 Add Product
               </Link>
             )}
@@ -91,9 +91,9 @@ const MarketPlace = () => {
               <div
                 key={product._id}
                 className='bg-white shadow-md rounded-lg overflow-hidden'>
-                <Link to={`/products/${product._id}`}>
+                <Link to={`/api/products/${product._id}`}>
                   <img
-                    src={`${process.env.REACT_APP_API_URL}/${product.imageUrl}`}
+                    src={`https://agri-connect-r9kk.onrender.com/${product.imageUrl}`}
                     alt={product.name}
                     className='w-full h-48 object-cover'
                   />

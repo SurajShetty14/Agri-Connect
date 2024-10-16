@@ -16,7 +16,7 @@ const Register = () => {
     const trimmedPassword = password.trim();
 
     try {
-      const response = await API.post("/auth/register", {
+      const response = await API.post("/api/auth/register", {
         username: trimmedUsername,
         password: trimmedPassword,
         role,

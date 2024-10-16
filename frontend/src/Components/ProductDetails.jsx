@@ -5,10 +5,10 @@ const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
 
-  const baseURL = process.env.REACT_APP_API_URL;
+  const baseURL = "https://agri-connect-r9kk.onrender.com";
   useEffect(() => {
     const fetchProduct = async () => {
-      const response = await API.get(`/products/${id}`);
+      const response = await API.get(`/api/products/${id}`);
       setProduct(response.data);
     };
     fetchProduct();
@@ -22,7 +22,7 @@ const ProductDetails = () => {
         {product.name}
       </h2>
       <img
-        src={`${baseURL}/${product.imageUrl}`}
+        src={`https://agri-connect-r9kk.onrender.com/${product.imageUrl}`}
         alt={product.name}
         className='w-full h-72 object-cover rounded-md mb-4'
       />

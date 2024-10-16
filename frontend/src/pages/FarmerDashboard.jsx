@@ -14,7 +14,7 @@ const FarmerDashboard = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await API.get("/products");
+        const response = await API.get("/api/products");
         setProducts(response.data);
         setLoading(false);
       } catch (error) {
@@ -69,7 +69,7 @@ const FarmerDashboard = () => {
               <span className='text-lg font-semibold'>Farmers</span>
             </a>
             <a
-              href='/'
+              href='#'
               className='flex items-center px-4 py-2 text-gray-100 hover:bg-green-700 rounded-md transition duration-300 ease-in-out transform hover:scale-105'>
               <svg
                 className='h-6 w-6 mr-3'
@@ -108,7 +108,7 @@ const FarmerDashboard = () => {
               <span className='text-lg font-semibold'>Transactions</span>
             </a>
             <a
-              href='#'
+              href='/'
               className='flex items-center px-4 py-2 text-gray-100 hover:bg-green-700 rounded-md transition duration-300 ease-in-out transform hover:scale-105'>
               <svg
                 className='h-6 w-6 mr-3'
@@ -118,7 +118,7 @@ const FarmerDashboard = () => {
                 stroke='currentColor'>
                 <path d='M13 10V3L4 14h7v7l9-11h-7z' />
               </svg>
-              <span className='text-lg font-semibold'>Settings</span>
+              <span className='text-lg font-semibold'>Log-Out</span>
             </a>
           </nav>
         </div>

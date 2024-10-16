@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import API from "../Api"; // Assuming you have an Axios instance or API service
+
 const decodeToken = (token) => {
   const base64Url = token.split(".")[1];
   const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -23,25 +25,32 @@ const ProductForm = ({ isEdit }) => {
   useEffect(() => {
     if (isEdit && id) {
       const fetchProduct = async () => {
-        const response = await API.get(`/products/${id}`);
+        try {
+          const response = await API.get(`/api/products/${id}`);
+          const product = response.data;
 
-        const product = response.data;
-        setName(product.name);
-        setPrice(product.price);
-        setDescription(product.description);
-        setQuantity(product.quantity);
+          setName(product.name);
+          setPrice(product.price);
+          setDescription(product.description);
+          setQuantity(product.quantity);
+        } catch (error) {
+          console.error("Error fetching product:", error);
+        }
       };
       fetchProduct();
     }
   }, [isEdit, id]);
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const formData = new FormData();
     formData.append("name", name);
     formData.append("price", price);
     formData.append("description", description);
     formData.append("quantity", quantity);
+
     if (image) {
       formData.append("image", image);
     }
@@ -51,33 +60,29 @@ const ProductForm = ({ isEdit }) => {
       try {
         const decodedToken = decodeToken(token);
         const farmerId = decodedToken.farmerId;
-
+        console.log(farmerId);
         formData.append("farmerId", farmerId);
+        console.log([...formData]);
 
         const headers = {
           Authorization: `Bearer ${token}`,
         };
 
         if (isEdit) {
-          await API.put(`/products/${id}`, formData, {
-            headers,
-          });
+          await API.put(`/api/products/${id}`, formData, { headers });
           alert("Product updated successfully!");
         } else {
-          await API.post("/products", formData, {
-            headers,
-          });
+          await API.post("/api/products", formData, { headers });
           alert("Product created successfully!");
         }
 
-        // Clear the form
         setName("");
         setPrice("");
         setDescription("");
         setQuantity("");
         setImage(null);
       } catch (error) {
-        console.error("Error decoding token:", error);
+        console.error("Error saving product:", error);
         alert("Error saving product!");
       }
     } else {
