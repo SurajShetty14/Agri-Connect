@@ -1,6 +1,6 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import API from "../Api";
 import backgroundImage from "../assets/new.jpg";
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -16,14 +16,11 @@ const Register = () => {
     const trimmedPassword = password.trim();
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
-        {
-          username: trimmedUsername,
-          password: trimmedPassword,
-          role,
-        }
-      );
+      const response = await API.post("/api/auth/register", {
+        username: trimmedUsername,
+        password: trimmedPassword,
+        role,
+      });
 
       setSuccess("User registered successfully!");
       setError("");
