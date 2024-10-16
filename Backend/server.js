@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 app.use(
   cors({
-    origin: "https://agri-connect-ym23.vercel.app/",
+    origin: "http://localhost:5173/",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
