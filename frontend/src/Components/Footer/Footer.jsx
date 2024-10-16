@@ -67,7 +67,7 @@ const Footer = () => {
             Email: <a href="mailto:info@agriconnect.com" className="hover:text-green-500">info@agriconnect.com</a>
           </p>
           <p className="text-gray-400">
-            Phone: <a href="tel:+919876543210" className="hover:text-green-500">+91 98765 43210</a>
+            Phone: <a href="tel:+919876543210" className="hover:text-green-500">+91 63615 97910</a>
           </p>
         </div>
       </div>
