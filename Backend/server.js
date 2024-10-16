@@ -28,7 +28,7 @@ app.get("/sample", (req, res) => {
   res.send("hello");
 });
 app.get("/", (req, res) => {
-  res.send("Welcome to the API!");
+  res.send("Welcome to the API bro!");
 });
 
 app.use((err, req, res, next) => {
