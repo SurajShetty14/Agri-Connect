@@ -23,7 +23,7 @@ const LoginPage = () => {
       const { token, role } = response.data;
 
       localStorage.setItem("token", token);
-      localStorage.setItem("role", role);
+      localStorage.setem("role", role);
 
       setError("");
       if (role === "farmer") {
